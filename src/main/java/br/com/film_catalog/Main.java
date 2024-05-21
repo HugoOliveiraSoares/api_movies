@@ -31,29 +31,36 @@ public class Main {
         String body = response.body();
         System.out.println(body);
 
-        String[] split = body.split(".,\"");
+        Matcher matcher = Pattern
+                .compile("\\[(.*)\\]")
+                .matcher(body);
 
-        List<String> titles = new ArrayList<>();
-        List<String> urlImages = new ArrayList<>();
-        List<String> popularity= new ArrayList<>();
-
-
-        for(String s : split){
-            if (s.contains("original_title")){
-                titles.add(s.split("\":\"")[1]);
-            }
-            if (s.contains("poster_path")){
-                urlImages.add(s.split("\":\"")[1]);
-            }
-            if (s.contains("popularity")){
-                popularity.add(s.split("\":")[1]);
-            }
+        if (!matcher.find()) {
+            throw new IllegalArgumentException("Match not found");
         }
+
+        String[] movies = body.substring(matcher.start()).split("\\},\\{");
+
+        List<String> titles = parseObject("original_title", movies);
+        List<String> urlImages = parseObject("poster_path", movies);
+        List<String> popularity = parseObject("popularity", movies);
 
         titles.forEach(System.out::println);
         urlImages.forEach(System.out::println);
         popularity.forEach(System.out::println);
 
+    }
+
+    public static List<String> parseObject(String field, String[] movies) {
+        List<String> list = new ArrayList<>();
+
+        for (String m : movies) {
+            String substring = m.substring(m.indexOf(field+"\":"));
+            String s = substring.split(",\"")[0];
+            list.add(s.split("\":")[1].replaceAll("\"", ""));
+        }
+
+        return list;
     }
 
 }
