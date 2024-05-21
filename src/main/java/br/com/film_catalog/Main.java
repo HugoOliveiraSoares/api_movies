@@ -1,6 +1,7 @@
 package br.com.film_catalog;
 
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.net.URI;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
@@ -45,19 +46,26 @@ public class Main {
 
         movies1.forEach(System.out::println);
 
+        PrintWriter printWriter = new PrintWriter("index.html");
+
+        HTMLGenerator htmlGenerator = new HTMLGenerator(printWriter);
+        htmlGenerator.generate(movies1);
+
+        printWriter.close();
+
     }
 
     public static List<Movie> parseObject(String[] movies) {
         List<Movie> list = new ArrayList<>();
 
         for (String m : movies) {
-            String titleSub = m.substring(m.indexOf("original_title\":"));
+            String titleSub = m.substring(m.indexOf("title\":"));
             String ts = titleSub.split(",\"")[0];
 
             String posterSub = m.substring(m.indexOf("poster_path\":"));
             String pp = posterSub.split(",\"")[0];
 
-            String popularitySub = m.substring(m.indexOf("popularity\":"));
+            String popularitySub = m.substring(m.indexOf("vote_average\":"));
             String p = popularitySub.split(",\"")[0];
 
             String releaseDateSub = m.substring(m.indexOf("release_date\":"));
