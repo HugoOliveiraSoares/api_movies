@@ -41,23 +41,35 @@ public class Main {
 
         String[] movies = body.substring(matcher.start()).split("\\},\\{");
 
-        List<String> titles = parseObject("original_title", movies);
-        List<String> urlImages = parseObject("poster_path", movies);
-        List<String> popularity = parseObject("popularity", movies);
+        List<Movie> movies1 = parseObject(movies);
 
-        titles.forEach(System.out::println);
-        urlImages.forEach(System.out::println);
-        popularity.forEach(System.out::println);
+        movies1.forEach(System.out::println);
 
     }
 
-    public static List<String> parseObject(String field, String[] movies) {
-        List<String> list = new ArrayList<>();
+    public static List<Movie> parseObject(String[] movies) {
+        List<Movie> list = new ArrayList<>();
 
         for (String m : movies) {
-            String substring = m.substring(m.indexOf(field+"\":"));
-            String s = substring.split(",\"")[0];
-            list.add(s.split("\":")[1].replaceAll("\"", ""));
+            String titleSub = m.substring(m.indexOf("original_title\":"));
+            String ts = titleSub.split(",\"")[0];
+
+            String posterSub = m.substring(m.indexOf("poster_path\":"));
+            String pp = posterSub.split(",\"")[0];
+
+            String popularitySub = m.substring(m.indexOf("popularity\":"));
+            String p = popularitySub.split(",\"")[0];
+
+            String releaseDateSub = m.substring(m.indexOf("release_date\":"));
+            String rd = releaseDateSub.split(",\"")[0];
+
+            list.add(
+                    new Movie(
+                            ts.split("\":")[1].replaceAll("\"", ""),
+                            pp.split("\":")[1].replaceAll("\"", ""),
+                            Float.parseFloat(p.split("\":")[1].replaceAll("\"", "")),
+                            Integer.parseInt(rd.split("\":")[1].replaceAll("\"", "").split("-")[0])
+                    ));
         }
 
         return list;
