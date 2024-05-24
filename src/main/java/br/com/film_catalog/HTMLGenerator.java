@@ -1,5 +1,7 @@
 package br.com.film_catalog;
 
+import br.com.film_catalog.entities.Content;
+
 import java.io.PrintWriter;
 import java.util.List;
 
@@ -11,7 +13,7 @@ public class HTMLGenerator {
         this.writer = writer;
     }
 
-    public void generate(List<Movie> movies) {
+    public void generate(List<? extends Content> contents) {
 
         String head = """
                 <head>
@@ -42,7 +44,7 @@ public class HTMLGenerator {
         String divTemplate = """
                         <div class="col-sm-6 col-md-4 col-lg-3 mb-4">
                             <div class="card text-white bg-dark mb-3" style="max-width: 18rem;">
-                                <img class="card-img-top" src="https://image.tmdb.org/t/p/w300%s" alt="%s">
+                                <img class="card-img-top" src="%s" alt="%s">
                                 <div class="card-body">
                                     <h5 class="card-title">%s </h5>
                                     <p class="card-text mt-2">Nota: %s - Ano: %s</p>
@@ -54,7 +56,14 @@ public class HTMLGenerator {
 
         writer.println(head + body);
 
-        movies.forEach(movie -> writer.println(String.format(divTemplate, movie.imageUrl(), movie.title(), movie.title(), movie.rating(), movie.year())));
+        contents.forEach(content -> writer.println(String.format(
+                divTemplate,
+                content.imageUrl(),
+                content.title(),
+                content.title(),
+                content.rating(),
+                content.year()
+        )));
 
         writer.println("</div>\n</div>\n</body>");
 

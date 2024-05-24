@@ -1,4 +1,4 @@
-package br.com.film_catalog;
+package br.com.film_catalog.api_client;
 
 import java.io.IOException;
 import java.net.URI;
@@ -6,7 +6,7 @@ import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 
-public class TMDBApiClient {
+public class TMDBApiClient implements ApiClient {
 
     private final String apiKey;
 

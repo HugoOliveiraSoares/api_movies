@@ -1,11 +1,13 @@
-package br.com.film_catalog;
+package br.com.film_catalog.parser;
+
+import br.com.film_catalog.entities.Movie;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public class TMDBMovieJsonParser {
+public class TMDBMovieJsonParser implements JsonParser {
 
     private final String json;
 
@@ -28,7 +30,7 @@ public class TMDBMovieJsonParser {
         return parseObject(movies);
     }
 
-    public static List<Movie> parseObject(String[] movies) {
+    public List<Movie> parseObject(String[] movies) {
         List<Movie> list = new ArrayList<>();
 
         for (String m : movies) {
@@ -47,7 +49,7 @@ public class TMDBMovieJsonParser {
             list.add(
                     new Movie(
                             ts.split("\":")[1].replaceAll("\"", ""),
-                            pp.split("\":")[1].replaceAll("\"", ""),
+                           "https://image.tmdb.org/t/p/w300"+pp.split("\":")[1].replaceAll("\"", ""),
                             Float.parseFloat(p.split("\":")[1].replaceAll("\"", "")),
                             Integer.parseInt(rd.split("\":")[1].replaceAll("\"", "").split("-")[0])
                     ));
