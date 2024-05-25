@@ -31,7 +31,7 @@ public class HTMLGenerator {
                     body {
                         background-color: #6c757d
                     }
-                </style
+                </style>
                 
                 """;
 
