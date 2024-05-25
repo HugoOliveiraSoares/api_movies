@@ -31,6 +31,10 @@ public class HTMLGenerator {
                     body {
                         background-color: #6c757d
                     }
+                    
+                    .type {
+                        color: gray
+                    }
                 </style>
                 
                 """;
@@ -46,6 +50,7 @@ public class HTMLGenerator {
                             <div class="card text-white bg-dark mb-3" style="max-width: 18rem;">
                                 <img class="card-img-top" src="%s" alt="%s">
                                 <div class="card-body">
+                                    <p class="card-text fs-6 type">%s</p>
                                     <h5 class="card-title">%s </h5>
                                     <p class="card-text mt-2">Nota: %s - Ano: %s</p>
                                 </div>
@@ -60,6 +65,7 @@ public class HTMLGenerator {
                 divTemplate,
                 content.imageUrl(),
                 content.title(),
+                content.type(),
                 content.title(),
                 content.rating(),
                 content.year()

@@ -1,6 +1,6 @@
 package br.com.film_catalog.entities;
 
-public interface Content {
+public interface Content extends Comparable<Object> {
     String title();
 
     String imageUrl();
@@ -13,4 +13,12 @@ public interface Content {
        return this.getClass().getSimpleName();
     }
 
+    @Override
+    default int compareTo(Object o){
+        return this.compareTo((Content) o);
+    }
+
+    default int compareTo(Content content){
+        return Integer.compare(this.year(), content.year());
+    }
 }
